@@ -4,7 +4,6 @@
 from itertools import count
 import openpyxl
 from .lib import ReleaseDataListCreaterFromCsv
-from .lib import Lib
 
 
 # ファイルから作成
@@ -17,32 +16,29 @@ def FromFile( file_path, sheet_name, date_start_str, date_end_str ):
     if sheet is None:
         return None
 
-    row = 3
-    col = 1
+    row_base = 3
     row_last = 0
+    col_base = 2
     col_last = 5
 
+    # rowの最後の位置を検索
     for cnt in count():
-        cell = sheet.cell( row=row+cnt, column=col+1 ) # 日付がなければ終了
+        # 日付がなければ終了
+        cell = sheet.cell( row=row_base+cnt, column=col_base )
         if cell.value is None:
             break
-        row_last = row+cnt
+        row_last = row_base+cnt
 
-    cells = sheet.iter_rows( min_row=row, max_row=row_last, min_col=col, max_col=col_last )
+    # セルの値を取得
+    cells = sheet.iter_rows( min_row=row_base, max_row=row_last, min_col=col_base, max_col=col_last )
 
+    # 値だけの配列に変換=データ
     def get_value_list(t_2d):
         return ([[cell.value for cell in row] for row in t_2d])
-    lines = get_value_list( cells )
+    datas = get_value_list( cells )
 
+    # ファイルはいらなくなったのでクローズ
     wb.close()
 
-    datas= []
-    line_count = 0
-    for line in lines:
-        #print( '{0} {1}'.format(sheet_name,line_count) )
-        #if 2 <= line_count:
-        datas.append( line )
-        #print( '{0} {1} {2}'.format(line_count,sheet_name,line) )
-        line_count = line_count + 1
-    #file_data.close()
-    return ReleaseDataListCreaterFromCsv.Create( datas, Lib.StrToDate(date_start_str), Lib.StrToDate(date_end_str) )
+    # データを作成して出力
+    return ReleaseDataListCreaterFromCsv.Create( datas, date_start_str, date_end_str )

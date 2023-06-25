@@ -3,21 +3,26 @@
 #
 import csv
 from .lib import ReleaseDataListCreaterFromCsv
-from .lib import Lib
 
 
 # ファイルから作成
 def FromFile( file_path, date_start_str, date_end_str ):
-    file_data = open(file_path, 'r', encoding="utf_8")
-    if file_data is None:
+    f = open(file_path, 'r', encoding="utf_8")
+    if f is None:
         return None
 
-    datas= []
-    reader = csv.reader(file_data)
-    count = 0
+    # データ取得
+    datas = []
+    reader = csv.reader( f )
     for line in reader:
-        if 2 <= count: # ここではファイルの中身だけ渡して2行目から解析～みたいなのはその先でやるべき.
-            datas.append( line )
-        count = count + 1
-    file_data.close()
-    return ReleaseDataListCreaterFromCsv.Create( datas, Lib.StrToDate(date_start_str), Lib.StrToDate(date_end_str) )
+        line.pop(0) # 空白の不要要素削除
+        datas.append( line )
+
+    # 頭は非データなので削除
+    datas.pop(0)
+    datas.pop(0)
+
+    # ファイルはいらなくなったのでクローズ
+    f.close()
+
+    return ReleaseDataListCreaterFromCsv.Create( datas, date_start_str, date_end_str )

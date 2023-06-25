@@ -1,5 +1,5 @@
 #
-# テンプレ出力
+# テンプレ出力(CSV版)
 # 
 import sys
 from enum import IntEnum, auto

@@ -5,16 +5,16 @@ from enum import IntEnum, auto
 from datetime import datetime
 from datetime import timedelta
 from ..lib import iCalLib
+from ..lib import Lib
 from ..data import Datas
 
 
 # ただの配列を処理してるだけだからCsvって名前に付けるべきじゃなかったな。
 
 # 作成
-def Create( items, date_start, date_end ):
+def Create( items, date_start_str, date_end_str ):
     class eDataID(IntEnum):
-        DataTitle   = 0         # データタイトル
-        ReleaseDate = auto()    # リリース日
+        ReleaseDate = 0         # リリース日
         ReleaseTime = auto()    # リリース時間
         TitleName   = auto()    # タイトル名
         Supplement  = auto()    # 補足
@@ -25,6 +25,9 @@ def Create( items, date_start, date_end ):
         Time        = auto()
         Name        = auto()
         Supplement  = auto()
+
+    date_start = Lib.StrToDate( date_start_str )
+    date_end = Lib.StrToDate( date_end_str )
 
     # 元データ(iCalを解析して整えたデータ)を作成
     data_sources = []
