@@ -8,6 +8,8 @@ from ..lib import iCalLib
 from ..data import Datas
 
 
+# ただの配列を処理してるだけだからCsvって名前に付けるべきじゃなかったな。
+
 # 作成
 def Create( items, date_start, date_end ):
     class eDataID(IntEnum):
@@ -26,6 +28,7 @@ def Create( items, date_start, date_end ):
 
     # 元データ(iCalを解析して整えたデータ)を作成
     data_sources = []
+    cnt = 0
     for item in items:
         data_source = [None,None,None,None] # eDataIndexと合わせる.クラスを挟めばいいんだけど、そこまでやる手間も必須ではないかな.
         data_source[eDataSourceIndex.Date] = datetime.strptime( item[eDataID.ReleaseDate], '%Y/%m/%d' )
@@ -34,6 +37,7 @@ def Create( items, date_start, date_end ):
         data_source[eDataSourceIndex.Name] = item[eDataID.TitleName]
         data_source[eDataSourceIndex.Supplement] = item[eDataID.Supplement]
         data_sources.append( data_source )
+        cnt = cnt + 1
 
     # 日付順でソートしておく.
     data_sources.sort()
