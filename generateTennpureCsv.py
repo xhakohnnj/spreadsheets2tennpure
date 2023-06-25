@@ -26,6 +26,6 @@ gamepass_out_list = CsvToReleaseDataList.FromFile( 'タイトルリリース - �
 # ゲームイベント
 gameevents_list = CsvToReleaseDataList.FromFile( 'タイトルリリース - イベント.csv', sys.argv[Args.GAME_EVENTS_DATE_START], sys.argv[Args.GAME_EVENTS_DATE_END] )
 
-with open( sys.argv[Args.OUTPUT_FILE], mode='w', encoding='utf-8', newline='\n' ) as output_file:
+with open( sys.argv[Args.OUTPUT_FILE], mode='w', encoding='utf-8', newline=os.linesep ) as output_file:
     TennpureGenerate.ToFile( output_file, release_list, gamepass_in_list, gamepass_out_list, gameevents_list )
 
