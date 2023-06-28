@@ -25,4 +25,4 @@ def FromFile( file_path, date_start_str, date_end_str ):
     # ファイルはいらなくなったのでクローズ
     f.close()
 
-    return ReleaseDataListCreaterFromCsv.Create( datas, date_start_str, date_end_str )
+    return ReleaseDataListCreaterFromCsv.Create( datas, date_start_str, date_end_str ) if datas != None and 0 < len(datas) else None

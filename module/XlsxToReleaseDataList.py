@@ -29,16 +29,18 @@ def FromFile( file_path, sheet_name, date_start_str, date_end_str ):
             break
         row_last = row_base+cnt
 
-    # セルの値を取得
-    cells = sheet.iter_rows( min_row=row_base, max_row=row_last, min_col=col_base, max_col=col_last )
+    datas = []
+    if 0 < row_last:
+        # セルの値を取得
+        cells = sheet.iter_rows( min_row=row_base, max_row=row_last, min_col=col_base, max_col=col_last )
 
-    # 値だけの配列に変換=データ
-    def get_value_list(t_2d):
-        return ([[cell.value for cell in row] for row in t_2d])
-    datas = get_value_list( cells )
+        # 値だけの配列に変換=データ
+        def get_value_list(t_2d):
+            return ([[cell.value for cell in row] for row in t_2d])
+        datas = get_value_list( cells )
 
     # ファイルはいらなくなったのでクローズ
     wb.close()
 
     # データを作成して出力
-    return ReleaseDataListCreaterFromCsv.Create( datas, date_start_str, date_end_str )
+    return ReleaseDataListCreaterFromCsv.Create( datas, date_start_str, date_end_str ) if datas != None and 0 < len(datas) else None
