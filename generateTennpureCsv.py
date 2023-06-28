@@ -2,6 +2,7 @@
 # テンプレ出力(CSV版)
 # 
 import sys
+import os
 from enum import IntEnum, auto
 from module import CsvToReleaseDataList
 from module.tennpure import TennpureGenerate
