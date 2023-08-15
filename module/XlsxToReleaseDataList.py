@@ -19,7 +19,7 @@ def FromFile( file_path, sheet_name, date_start_str, date_end_str ):
     row_base = 3
     row_last = 0
     col_base = 2
-    col_last = 5
+    col_last = 8 # ここなんかうまいことできたらいいんだけど.
 
     # rowの最後の位置を検索
     for cnt in count():

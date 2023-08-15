@@ -18,6 +18,9 @@ def Create( items, date_start_str, date_end_str ):
         ReleaseTime = auto()    # リリース時間
         TitleName   = auto()    # タイトル名
         Supplement  = auto()    # 補足
+        UserData1   = auto()    # なんでもデータ.名前が思いつかず適当.
+        UserData2   = auto()    # ...
+        UserData3   = auto()    # ...
 
     # データの配列のインデックス
     class eDataSourceIndex(IntEnum):
@@ -25,6 +28,9 @@ def Create( items, date_start_str, date_end_str ):
         Time        = auto()
         Name        = auto()
         Supplement  = auto()
+        UserData1   = auto()
+        UserData2   = auto()
+        UserData3   = auto()
 
     date_start = Lib.StrToDate( date_start_str )
     date_end = Lib.StrToDate( date_end_str )
@@ -33,12 +39,15 @@ def Create( items, date_start_str, date_end_str ):
     data_sources = []
     cnt = 0
     for item in items:
-        data_source = [None,None,None,None] # eDataIndexと合わせる.クラスを挟めばいいんだけど、そこまでやる手間も必須ではないかな.
+        data_source = [None,None,None,None,None,None,None] # eDataIndexと合わせる.クラスを挟めばいいんだけど、そこまでやる手間も必須ではないかな...と思ってたけどだんだん増えてきた.
         data_source[eDataSourceIndex.Date] = datetime.strptime( item[eDataID.ReleaseDate], '%Y/%m/%d' )
         if item[eDataID.ReleaseTime]:
             data_source[eDataSourceIndex.Time] = datetime.strptime( item[eDataID.ReleaseTime], '%H:%M' )
         data_source[eDataSourceIndex.Name] = item[eDataID.TitleName]
         data_source[eDataSourceIndex.Supplement] = item[eDataID.Supplement]
+        data_source[eDataSourceIndex.UserData1] = item[eDataID.UserData1]
+        data_source[eDataSourceIndex.UserData2] = item[eDataID.UserData2]
+        data_source[eDataSourceIndex.UserData3] = item[eDataID.UserData3]
         data_sources.append( data_source )
         cnt = cnt + 1
 
@@ -57,6 +66,9 @@ def Create( items, date_start_str, date_end_str ):
                 , data_source[eDataSourceIndex.Time]
                 , data_source[eDataSourceIndex.Name]
                 , data_source[eDataSourceIndex.Supplement]
+                , data_source[eDataSourceIndex.UserData1]
+                , data_source[eDataSourceIndex.UserData2]
+                , data_source[eDataSourceIndex.UserData3]
             )
         )
 

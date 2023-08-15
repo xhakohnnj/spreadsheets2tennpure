@@ -35,3 +35,9 @@ def ToFile( output_file, release_list, gamepass_in_list, gamepass_out_list, game
         WriteFile( '' )
         WriteFile( '【イベント】' )
         Lib.ForeachReleaseDataListConvTennpureFormat( gameevents_list, True, lambda item: WriteFile( item ) )
+        WriteFile( '' )
+        WriteFile( '' )
+        WriteFile( '' )
+        WriteFile( '↓↓↓テンプレとは別で配信のURLどこ～？って時に使ってもらえれば↓↓↓' )
+        Lib.ForeachReleaseDataListConvEvent( gameevents_list, True, lambda item: WriteFile( item ) )
+
