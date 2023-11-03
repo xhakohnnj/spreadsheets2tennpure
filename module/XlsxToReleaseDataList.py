@@ -16,10 +16,10 @@ def FromFile( file_path, sheet_name, date_start_str, date_end_str ):
     if sheet is None:
         return None
 
-    row_base = 3
+    row_base = 4
     row_last = 0
-    col_base = 2
-    col_last = 8 # ここなんかうまいことできたらいいんだけど.
+    col_base = 3
+    col_last = 9 # ここなんかうまいことできたらいいんだけど.
 
     # rowの最後の位置を検索
     for cnt in count():
