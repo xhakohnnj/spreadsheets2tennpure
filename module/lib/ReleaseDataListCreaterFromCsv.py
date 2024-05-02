@@ -65,6 +65,8 @@ def Create( sheet_name, items, date_start_str, date_end_str ):
         cnt = cnt + 1
 
     # 日付順でソート.
-    #release_data_list.sort()
+    def ToSort( r_data ):
+        return r_data.date
+    release_data_list.sort( key=ToSort )
 
     return Result( release_data_list=release_data_list )
