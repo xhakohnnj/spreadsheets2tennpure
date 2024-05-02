@@ -43,5 +43,5 @@ def FromFile( file_path, sheet_name, date_start_str, date_end_str ):
     wb.close()
 
     # データを作成して出力
-    return ReleaseDataListCreaterFromCsv.Create( datas, date_start_str, date_end_str ) if datas != None and 0 < len(datas) else None
+    return ReleaseDataListCreaterFromCsv.Create( sheet_name, datas, date_start_str, date_end_str ) if datas != None and 0 < len(datas) else None
 

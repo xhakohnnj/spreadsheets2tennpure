@@ -5,6 +5,7 @@ import openpyxl
 import datetime
 from enum import IntEnum, auto
 from . import Error
+from . import ErrorLog
 
 
 # 結果
@@ -55,40 +56,37 @@ def Get( file_path, sheet_name ):
     wb.close()
 
     # エラーチェック
-    def CheckError():
-        ### 廃止予定
-        if not isinstance(datas[0][eDataID.ReleaseDateStart],datetime.date):
-            return Error.eID.ExportSettings_ReleaseStartDateIsNotDateFormat
-        if not isinstance(datas[0][eDataID.ReleaseDateEnd],datetime.date):
-            return Error.eID.ExportSettings_ReleaseEndDateIsNotDateFormat
-        if not isinstance(datas[0][eDataID.GamePassDateStart],datetime.date):
-            return Error.eID.ExportSettings_GamePassStartDateIsNotDateFormat
-        if not isinstance(datas[0][eDataID.GamePassDateEnd],datetime.date):
-            return Error.eID.ExportSettings_GamePassEndDateIsNotDateFormat
-        if not isinstance(datas[0][eDataID.GameEventDateStart],datetime.date):
-            return Error.eID.ExportSettings_EventStartDateIsNotDateFormat
-        if not isinstance(datas[0][eDataID.GameEventDateEnd],datetime.date):
-            return Error.eID.ExportSettings_EventEndDateIsNotDateFormat
-        ### 廃止予定
-        # 正式
-        #if not isinstance(datas[0][eDataID.ReleaseDateStart],str):
-        #    return Error.eID.ExportSettings_ReleaseStartDateIsNotStrings
-        #if not isinstance(datas[0][eDataID.ReleaseDateEnd],str):
-        #    return Error.eID.ExportSettings_ReleaseEndDateIsNotStrings
-        #if not isinstance(datas[0][eDataID.GamePassDateStart],str):
-        #    return Error.eID.ExportSettings_GamePassStartDateIsNotStrings
-        #if not isinstance(datas[0][eDataID.GamePassDateEnd],str):
-        #    return Error.eID.ExportSettings_GamePassEndDateIsNotStrings
-        #if not isinstance(datas[0][eDataID.GameEventDateStart],str):
-        #    return Error.eID.ExportSettings_EventStartDateIsNotStrings
-        #if not isinstance(datas[0][eDataID.GameEventDateEnd],str):
-        #    return Error.eID.ExportSettings_EventEndDateIsNotStrings
-        ######
-        return Error.eID.NoError
-    error_id = CheckError()
+    ### 廃止予定
+    if not isinstance(datas[0][eDataID.ReleaseDateStart],datetime.date):
+        ErrorLog.Logs.Add( ErrorLog.Log(error_id=Error.eID.ExportSettings_ReleaseStartDateIsNotDateFormat) )
+    if not isinstance(datas[0][eDataID.ReleaseDateEnd],datetime.date):
+        ErrorLog.Logs.Add( ErrorLog.Log(error_id=Error.eID.ExportSettings_ReleaseEndDateIsNotDateFormat) )
+    if not isinstance(datas[0][eDataID.GamePassDateStart],datetime.date):
+        ErrorLog.Logs.Add( ErrorLog.Log(error_id=Error.eID.ExportSettings_GamePassStartDateIsNotDateFormat) )
+    if not isinstance(datas[0][eDataID.GamePassDateEnd],datetime.date):
+        ErrorLog.Logs.Add( ErrorLog.Log(error_id=Error.eID.ExportSettings_GamePassEndDateIsNotDateFormat) )
+    if not isinstance(datas[0][eDataID.GameEventDateStart],datetime.date):
+        ErrorLog.Logs.Add( ErrorLog.Log(error_id=Error.eID.ExportSettings_EventStartDateIsNotDateFormat) )
+    if not isinstance(datas[0][eDataID.GameEventDateEnd],datetime.date):
+        ErrorLog.Logs.Add( ErrorLog.Log(error_id=Error.eID.ExportSettings_EventEndDateIsNotDateFormat) )
+    ### 廃止予定
+    # 正式
+    #if not isinstance(datas[0][eDataID.ReleaseDateStart],str):
+    #    return Error.eID.ExportSettings_ReleaseStartDateIsNotStrings
+    #if not isinstance(datas[0][eDataID.ReleaseDateEnd],str):
+    #    return Error.eID.ExportSettings_ReleaseEndDateIsNotStrings
+    #if not isinstance(datas[0][eDataID.GamePassDateStart],str):
+    #    return Error.eID.ExportSettings_GamePassStartDateIsNotStrings
+    #if not isinstance(datas[0][eDataID.GamePassDateEnd],str):
+    #    return Error.eID.ExportSettings_GamePassEndDateIsNotStrings
+    #if not isinstance(datas[0][eDataID.GameEventDateStart],str):
+    #    return Error.eID.ExportSettings_EventStartDateIsNotStrings
+    #if not isinstance(datas[0][eDataID.GameEventDateEnd],str):
+    #    return Error.eID.ExportSettings_EventEndDateIsNotStrings
+    ######
 
-    if error_id is not Error.eID.NoError:
-        return Result( error_id=error_id )
+    if ErrorLog.Logs.IsErrors():
+        return Result()
 
     def DateToStr( date ):
         return date.strftime( '%Y/%m/%d' )
@@ -99,6 +97,5 @@ def Get( file_path, sheet_name ):
         , gamepass_date_end=DateToStr( datas[0][eDataID.GamePassDateEnd] )
         , gamepass_date_start=DateToStr( datas[0][eDataID.GameEventDateStart] )
         , gameevent_date_end=DateToStr( datas[0][eDataID.GameEventDateEnd] )
-        , error_id=error_id
     )
 
