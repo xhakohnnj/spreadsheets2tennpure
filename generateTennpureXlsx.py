@@ -6,6 +6,7 @@ import os
 from enum import IntEnum, auto
 from module import XlsxSettings
 from module import XlsxToReleaseDataList
+from module import Error
 from module.tennpure import TennpureGenerate
 
 
@@ -23,7 +24,7 @@ settings = None
 if len(sys.argv) == 2: # 雑いけど引数が出力ファイルのみだった場合
     settings = XlsxSettings.Get( 'Xboxタイトルリリース.xlsx', '出力設定' )
 else:
-    settings = XlsxSettings.Settings(
+    settings = XlsxSettings.Result(
         sys.argv[Args.TITLE_RELEASE_DATE_START]
         , sys.argv[Args.TITLE_RELEASE_DATE_END]
         , sys.argv[Args.GAME_PASS_DATE_START]
@@ -32,18 +33,18 @@ else:
         , sys.argv[Args.GAME_EVENTS_DATE_END]
     )
 
+if settings.error_id is not Error.eID.NoError:
+    print( "ERROR!!! " + Error.toMessage(settings.error_id) )
+else:
+    # リリースカレンダー
+    release_list = XlsxToReleaseDataList.FromFile( 'Xboxタイトルリリース.xlsx', 'タイトルリリース', settings.release_date_start, settings.release_date_end )
+    # ゲームパス IN
+    gamepass_in_list = XlsxToReleaseDataList.FromFile( 'Xboxタイトルリリース.xlsx', 'ゲームパスIN', settings.gamepass_date_start, settings.gamepass_date_end )
+    # ゲームパス OUT
+    gamepass_out_list = XlsxToReleaseDataList.FromFile( 'Xboxタイトルリリース.xlsx', 'ゲームパスOUT', settings.gamepass_date_start, settings.gamepass_date_end )
+    # ゲームイベント
+    gameevents_list = XlsxToReleaseDataList.FromFile( 'Xboxタイトルリリース.xlsx', 'イベント', settings.gameevent_date_start, settings.gameevent_date_end )
 
-
-
-# リリースカレンダー
-release_list = XlsxToReleaseDataList.FromFile( 'Xboxタイトルリリース.xlsx', 'タイトルリリース', settings.release_date_start, settings.release_date_end )
-# ゲームパス IN
-gamepass_in_list = XlsxToReleaseDataList.FromFile( 'Xboxタイトルリリース.xlsx', 'ゲームパスIN', settings.gamepass_date_start, settings.gamepass_date_end )
-# ゲームパス OUT
-gamepass_out_list = XlsxToReleaseDataList.FromFile( 'Xboxタイトルリリース.xlsx', 'ゲームパスOUT', settings.gamepass_date_start, settings.gamepass_date_end )
-# ゲームイベント
-gameevents_list = XlsxToReleaseDataList.FromFile( 'Xboxタイトルリリース.xlsx', 'イベント', settings.gameevent_date_start, settings.gameevent_date_end )
-
-with open( sys.argv[Args.OUTPUT_FILE], mode='w', encoding='utf-8', newline=os.linesep ) as output_file:
-    TennpureGenerate.ToFile( output_file, release_list, gamepass_in_list, gamepass_out_list, gameevents_list )
+    with open( sys.argv[Args.OUTPUT_FILE], mode='w', encoding='utf-8', newline=os.linesep ) as output_file:
+        TennpureGenerate.ToFile( output_file, release_list, gamepass_in_list, gamepass_out_list, gameevents_list )
 

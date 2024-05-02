@@ -1,20 +1,22 @@
 #
 # CSVからリリースデータのリストに変換
 #
-import csv
 import openpyxl
+import datetime
 from enum import IntEnum, auto
+from . import Error
 
 
-# 設定データ
-class Settings:
-    def __init__( self, release_date_start=None, release_date_end=None, gamepass_date_start=None, gamepass_date_end=None, gameevent_date_start=None, gameevent_date_end=None ):
-      self.release_date_start   = release_date_start    # タイトルリリース日にち(開始)
-      self.release_date_end     = release_date_end      # タイトルリリース日にち(終了)
-      self.gamepass_date_start  = gamepass_date_start   # ゲームパス日にち(開始)
-      self.gamepass_date_end    = gamepass_date_end     # ゲームパス日にち(終了)
-      self.gameevent_date_start = gameevent_date_start  # イベント日にち(開始)
-      self.gameevent_date_end   = gameevent_date_end    # イベント日にち(終了)
+# 結果
+class Result:
+    def __init__( self, release_date_start=None, release_date_end=None, gamepass_date_start=None, gamepass_date_end=None, gameevent_date_start=None, gameevent_date_end=None, error_id=Error.eID.NoError ):
+        self.release_date_start   = release_date_start    # タイトルリリース日にち(開始)
+        self.release_date_end     = release_date_end      # タイトルリリース日にち(終了)
+        self.gamepass_date_start  = gamepass_date_start   # ゲームパス日にち(開始)
+        self.gamepass_date_end    = gamepass_date_end     # ゲームパス日にち(終了)
+        self.gameevent_date_start = gameevent_date_start  # イベント日にち(開始)
+        self.gameevent_date_end   = gameevent_date_end    # イベント日にち(終了)
+        self.error_id             = error_id              # エラー
 
 # ファイルから作成
 def Get( file_path, sheet_name ):
@@ -52,14 +54,51 @@ def Get( file_path, sheet_name ):
     # ファイルはいらなくなったのでクローズ
     wb.close()
 
+    # エラーチェック
+    def CheckError():
+        ### 廃止予定
+        if not isinstance(datas[0][eDataID.ReleaseDateStart],datetime.date):
+            return Error.eID.ExportSettings_ReleaseStartDateIsNotDateFormat
+        if not isinstance(datas[0][eDataID.ReleaseDateEnd],datetime.date):
+            return Error.eID.ExportSettings_ReleaseEndDateIsNotDateFormat
+        if not isinstance(datas[0][eDataID.GamePassDateStart],datetime.date):
+            return Error.eID.ExportSettings_GamePassStartDateIsNotDateFormat
+        if not isinstance(datas[0][eDataID.GamePassDateEnd],datetime.date):
+            return Error.eID.ExportSettings_GamePassEndDateIsNotDateFormat
+        if not isinstance(datas[0][eDataID.GameEventDateStart],datetime.date):
+            return Error.eID.ExportSettings_EventStartDateIsNotDateFormat
+        if not isinstance(datas[0][eDataID.GameEventDateEnd],datetime.date):
+            return Error.eID.ExportSettings_EventEndDateIsNotDateFormat
+        ### 廃止予定
+        # 正式
+        #if not isinstance(datas[0][eDataID.ReleaseDateStart],str):
+        #    return Error.eID.ExportSettings_ReleaseStartDateIsNotStrings
+        #if not isinstance(datas[0][eDataID.ReleaseDateEnd],str):
+        #    return Error.eID.ExportSettings_ReleaseEndDateIsNotStrings
+        #if not isinstance(datas[0][eDataID.GamePassDateStart],str):
+        #    return Error.eID.ExportSettings_GamePassStartDateIsNotStrings
+        #if not isinstance(datas[0][eDataID.GamePassDateEnd],str):
+        #    return Error.eID.ExportSettings_GamePassEndDateIsNotStrings
+        #if not isinstance(datas[0][eDataID.GameEventDateStart],str):
+        #    return Error.eID.ExportSettings_EventStartDateIsNotStrings
+        #if not isinstance(datas[0][eDataID.GameEventDateEnd],str):
+        #    return Error.eID.ExportSettings_EventEndDateIsNotStrings
+        ######
+        return Error.eID.NoError
+    error_id = CheckError()
+
+    if error_id is not Error.eID.NoError:
+        return Result( error_id=error_id )
+
     def DateToStr( date ):
         return date.strftime( '%Y/%m/%d' )
-    return Settings(
-        DateToStr( datas[0][eDataID.ReleaseDateStart] )
-        , DateToStr( datas[0][eDataID.ReleaseDateEnd] )
-        , DateToStr( datas[0][eDataID.GamePassDateStart] )
-        , DateToStr( datas[0][eDataID.GamePassDateEnd] )
-        , DateToStr( datas[0][eDataID.GameEventDateStart] )
-        , DateToStr( datas[0][eDataID.GameEventDateEnd] )
+    return Result(
+        release_date_start=DateToStr( datas[0][eDataID.ReleaseDateStart] )
+        , release_date_end=DateToStr( datas[0][eDataID.ReleaseDateEnd] )
+        , gameevent_date_start=DateToStr( datas[0][eDataID.GamePassDateStart] )
+        , gamepass_date_end=DateToStr( datas[0][eDataID.GamePassDateEnd] )
+        , gamepass_date_start=DateToStr( datas[0][eDataID.GameEventDateStart] )
+        , gameevent_date_end=DateToStr( datas[0][eDataID.GameEventDateEnd] )
+        , error_id=error_id
     )
 
