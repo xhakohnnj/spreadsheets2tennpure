@@ -66,6 +66,8 @@ if ErrorLog.Logs.IsErrors():
     print("～～～～～～～～～～～～～～～～～～")
     print("入力情報にエラーがあったため出力しませんでした。")
     print("下記に出力されるエラーの内容を確認して修正をお願いします。")
+    print("エラーの内容は出力ファイルにも出力しています。")
     print("～～～～～～～～～～～～～～～～～～")
     print("\n")
-    ErrorLog.Logs.Dump()
+    with open( sys.argv[Args.OUTPUT_FILE], mode='w', encoding='utf-8', newline=os.linesep ) as output_file:
+        ErrorLog.Logs.Dump( output_file )

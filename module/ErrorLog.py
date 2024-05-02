@@ -27,12 +27,17 @@ class Logs:
         return 0 < len(Logs.__list)
     
     @staticmethod
-    def Dump():
+    def Dump( output_file=None ):
+        def OutputLog( str ):
+            if output_file is not None:
+                output_file.write( str + '\n' )
+            print( str )
+
         for item in Logs.__list:
-            print( "<<< ERROR !!! >>>" )
-            print( Error.toMessage(item.errorId) )
+            OutputLog( "<<< ERROR !!! >>>" )
+            OutputLog( Error.toMessage(item.errorId) )
             if item.bodyMessage is not None:
-                print( "- - - - - - - - -" )
-                print( item.bodyMessage )
-            print( "^^^^^^^^^^^^^^^^^" )
+                OutputLog( "- - - - - - - - -" )
+                OutputLog( item.bodyMessage )
+            OutputLog( "^^^^^^^^^^^^^^^^^" )
 
