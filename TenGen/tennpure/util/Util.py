@@ -1,5 +1,5 @@
 #
-# テンプレ関係のライブラリ
+# テンプレ出力関係のユーティリティ
 #
 from datetime import timedelta
 
@@ -11,7 +11,7 @@ from datetime import timedelta
 # is_use_time   時間も使用するかどうか
 # func          データ1つに行う処理
 #
-def ForeachReleaseDataListConvTennpureFormat( data_list, is_use_time, func, *args ):
+def ForeachTitleDataListConvTennpureFormat( data_list:list, is_use_time:bool, func, *args ):
     year_tmp = None
     output_year = False
     insert_newline = False
@@ -47,7 +47,7 @@ def ForeachReleaseDataListConvTennpureFormat( data_list, is_use_time, func, *arg
 
         func( item )
 
-def ForeachReleaseDataListConvEvent( data_list, is_use_time, func, *args ):
+def ForeachTitleDataListConvEvent( data_list:list, is_use_time:bool, func, *args ):
     # ～TennpureFormatでやってる「年をまたいだら～」なところは未対応。めんどくさい。
     for data in data_list:
         date_format = '%m/%d'
