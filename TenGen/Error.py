@@ -80,11 +80,11 @@ message_table = {
     eID.Event_TimeIsNotStrings:"「イベント」シートの「時刻」の書式が「書式なしテキスト」ではありません。\n書式を「書式なしテキスト」に設定してください。",
 }
 
-def toMessage( id ):
+def toMessage( id:eID ):
     #return "エラー: {0}".format(id)
     return message_table[id]
 
-def IDConvExportCommonToTitleRelease( id ):
+def IDConvExportCommonToTitleRelease( id:eID ):
     table = {
         eID.ExportCommon_DateIsNone: eID.TitleRelease_DateIsNone,
         eID.ExportCommon_TitleIsNone: eID.TitleRelease_TitleIsNone,
@@ -95,7 +95,7 @@ def IDConvExportCommonToTitleRelease( id ):
         return eID.NoError
     return table[id]
 
-def IDConvExportCommonToGamePassIn( id ):
+def IDConvExportCommonToGamePassIn( id:eID ):
     table = {
         eID.ExportCommon_DateIsNone: eID.GamePassIn_DateIsNone,
         eID.ExportCommon_TitleIsNone: eID.GamePassIn_TitleIsNone,
@@ -106,7 +106,7 @@ def IDConvExportCommonToGamePassIn( id ):
         return eID.NoError
     return table[id]
 
-def IDConvExportCommonToGamePassOut( id ):
+def IDConvExportCommonToGamePassOut( id:eID ):
     table = {
         eID.ExportCommon_DateIsNone: eID.GamePassOut_DateIsNone,
         eID.ExportCommon_TitleIsNone: eID.GamePassOut_TitleIsNone,
@@ -117,7 +117,7 @@ def IDConvExportCommonToGamePassOut( id ):
         return eID.NoError
     return table[id]
 
-def IDConvExportCommonToEvent( id ):
+def IDConvExportCommonToEvent( id:eID ):
     table = {
         eID.ExportCommon_DateIsNone: eID.Event_DateIsNone,
         eID.ExportCommon_TitleIsNone: eID.Event_TitleIsNone,

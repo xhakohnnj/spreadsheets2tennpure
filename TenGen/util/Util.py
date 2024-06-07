@@ -1,5 +1,5 @@
 #
-# ライブラリ
+# ユーティリティ
 #
 from datetime import datetime
 
