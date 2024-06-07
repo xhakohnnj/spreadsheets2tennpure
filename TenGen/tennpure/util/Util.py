@@ -33,7 +33,7 @@ def ForeachTitleDataListConvTennpureFormat( data_list:list, is_use_time:bool, fu
         if output_year is True:
             date_format = '%Y/{0}'.format( date_format )
         if is_use_time is True:
-            date_format = '{0} %H:%S'.format( date_format )
+            date_format = '{0} %H:%M'.format( date_format )
         date_str = date.strftime( date_format )
 
         item = '{0}　{1}'.format( date_str, data.titleName )
@@ -55,7 +55,7 @@ def ForeachTitleDataListConvEvent( data_list:list, is_use_time:bool, func, *args
         if data.time is not None:
             date = date + timedelta( hours=data.time.hour, minutes=data.time.minute )
         if is_use_time is True:
-            date_format = '{0} %H:%S'.format( date_format )
+            date_format = '{0} %H:%M'.format( date_format )
         date_str = date.strftime( date_format )
 
         item = '{0}　{1}'.format( date_str, data.titleName )
