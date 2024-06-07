@@ -58,17 +58,9 @@ def ForeachTitleDataListConvEvent( data_list:list, is_use_time:bool, func, *args
             date_format = '{0} %H:%M'.format( date_format )
         date_str = date.strftime( date_format )
 
-        item = '{0}　{1}'.format( date_str, data.titleName )
-        if data.supplement:
-            item = '{0}　←{1}'.format( item , data.supplement )
+        item = '■ [{0}　{1}]'.format( date_str, data.titleName )
         # 配信URL
         if data.userData1:
-            item = '{0}\n　{1}'.format( item , data.userData1 )
-        # 概要
-        if data.userData2:
-            item = '{0}\n　{1}'.format( item , data.userData2 )
-        # アナウンス(詳細)URL
-        if data.userData3:
-            item = '{0}\n　詳細: {1}'.format( item , data.userData3 )
+            item = '{0}\n{1}'.format( item , data.userData1 )
 
         func( item )

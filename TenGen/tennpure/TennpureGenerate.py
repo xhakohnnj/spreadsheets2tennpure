@@ -39,6 +39,6 @@ def ToFile( output_file:io.TextIOWrapper, title_release_list:list, gamepass_in_l
         WriteFile( '' )
         WriteFile( '' )
         WriteFile( '' )
-        WriteFile( '↓↓↓テンプレとは別で配信のURLどこ～？って時に使ってもらえれば↓↓↓' )
+        WriteFile( '【イベント配信先】' )
         Util.ForeachTitleDataListConvEvent( gameevents_list, True, lambda item: WriteFile( item ) )
 
